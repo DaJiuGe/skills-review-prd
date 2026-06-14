@@ -1,0 +1,20 @@
+{
+  "name": "review-prd",
+  "version": "1.0.0",
+  "description": "PRD EventStorming 评审 Skill：多轮 LLM 结构化抽取 + 报告落盘",
+  "type": "skill",
+  "entry": "./index.js",
+  "triggers": ["/review-prd", "review this PRD", "review-prd"],
+  "keywords": ["ddd", "event-storming", "prd-review", "llm"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "permissions": ["read:file", "write:file"],
+  "docs": {
+    "skill": "./SKILL.md",
+    "reference": "./REFERENCE.md",
+    "examples": "./EXAMPLES.md",
+    "schema": "./docs/schema-design.md"
+  }
+}

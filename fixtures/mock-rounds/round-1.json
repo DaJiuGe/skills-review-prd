@@ -1,0 +1,148 @@
+{
+  "version": "1.0",
+  "round": 1,
+  "prd_metadata": {
+    "title": "会议室预订系统 PRD",
+    "total_sections": 9,
+    "estimated_lines": 420
+  },
+  "terms": [
+    {
+      "id": "term-001",
+      "term": "Booking",
+      "aliases": ["预订", "预约", "booking"],
+      "definition": "员工对会议室在特定时段的使用请求",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 1,
+          "approximate_line": 35,
+          "quote": "用户选择会议室、日期和时段后提交预订"
+        }
+      ],
+      "domain_category": "core",
+      "first_introduced": true
+    },
+    {
+      "id": "term-002",
+      "term": "MeetingRoom",
+      "aliases": ["会议室", "room"],
+      "definition": "企业内部的物理会议空间资源",
+      "source_location": [
+        {
+          "section_title": "3. 会议室资源管理",
+          "paragraph_index": 1,
+          "approximate_line": 22,
+          "quote": "会议室是系统的核心资源"
+        }
+      ],
+      "domain_category": "core",
+      "first_introduced": true
+    },
+    {
+      "id": "term-003",
+      "term": "User",
+      "aliases": ["用户", "员工", "成员"],
+      "definition": "在系统中发起或参与会议室预订的人员",
+      "source_location": [
+        {
+          "section_title": "2. 目标用户与角色",
+          "paragraph_index": 1,
+          "approximate_line": 12,
+          "quote": "用户：企业内所有需要预订会议室的人员"
+        }
+      ],
+      "domain_category": "core",
+      "first_introduced": true
+    },
+    {
+      "id": "term-004",
+      "term": "Approval",
+      "aliases": ["审批", "审核"],
+      "definition": "对特殊会议室预订申请的人工确认过程",
+      "source_location": [
+        {
+          "section_title": "5. 审批策略",
+          "paragraph_index": 1,
+          "approximate_line": 48,
+          "quote": "以下场景需进入人工审批"
+        }
+      ],
+      "domain_category": "supporting",
+      "first_introduced": true
+    },
+    {
+      "id": "term-005",
+      "term": "CalendarLock",
+      "aliases": ["日历锁定", "锁定"],
+      "definition": "会议室时段在日历视图中被标记为不可被他人占用",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 2,
+          "approximate_line": 38,
+          "quote": "将对应时段在日历视图中标记为“已占用”"
+        }
+      ],
+      "domain_category": "core",
+      "first_introduced": true
+    },
+    {
+      "id": "term-006",
+      "term": "EmailNotification",
+      "aliases": ["邮件通知", "邮件"],
+      "definition": "通过邮件服务向用户发送的预订相关通知",
+      "source_location": [
+        {
+          "section_title": "7. 外部系统集成",
+          "paragraph_index": 1,
+          "approximate_line": 88,
+          "quote": "在预订成功、审批结果变更、会议开始前 15 分钟...发送邮件"
+        }
+      ],
+      "domain_category": "generic",
+      "first_introduced": true
+    },
+    {
+      "id": "term-007",
+      "term": "WeCom",
+      "aliases": ["企业微信", "微信"],
+      "definition": "企业微信，用于推送审批待办和即时提醒",
+      "source_location": [
+        {
+          "section_title": "7. 外部系统集成",
+          "paragraph_index": 2,
+          "approximate_line": 92,
+          "quote": "企业微信：推送审批待办、会议提醒及紧急变更通知"
+        }
+      ],
+      "domain_category": "generic",
+      "first_introduced": true
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "conflict-001",
+      "severity": "high",
+      "type": "alias_overlap",
+      "term_a_id": "term-003",
+      "term_b_id": "term-003",
+      "description": "PRD 第 2 节将 '用户'、'员工'、'成员' 混用，未明确是否指同一概念",
+      "suggested_resolution": "统一使用 'User' 指代系统账号持有者，'Member' 特指会议受邀人"
+    },
+    {
+      "id": "conflict-002",
+      "severity": "medium",
+      "type": "homonym",
+      "term_a_id": "term-001",
+      "term_b_id": "term-005",
+      "description": "'预订' 与 '日历锁定' 在 PRD 第 4 节界限模糊，预订成功是否立即锁定未明确",
+      "suggested_resolution": "在 PRD 中显式定义 Booking 与 CalendarLock 的生命周期关系"
+    }
+  ],
+  "summary": {
+    "total_terms": 7,
+    "new_terms": 7,
+    "conflict_count": 2
+  }
+}

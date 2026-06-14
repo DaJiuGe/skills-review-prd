@@ -1,0 +1,138 @@
+{
+  "version": "1.0",
+  "round": 3,
+  "dependencies": {
+    "round1_term_ids": [
+      "term-001",
+      "term-002",
+      "term-003",
+      "term-004",
+      "term-005",
+      "term-006",
+      "term-007"
+    ],
+    "round2_event_ids": [
+      "evt-001",
+      "evt-002",
+      "evt-003",
+      "evt-004",
+      "evt-005",
+      "evt-006",
+      "evt-007"
+    ],
+    "round2_command_ids": ["cmd-001", "cmd-002"],
+    "round2_aggregate_ids": ["agg-001", "agg-002"],
+    "round2_policy_ids": []
+  },
+  "checks": {
+    "orphan_events": [
+      {
+        "event_id": "evt-003",
+        "event_name": "BookingCancelled",
+        "severity": "high",
+        "hypothesis": "可能缺少显式命令触发该事件",
+        "suggested_command": "CancelBooking"
+      }
+    ],
+    "missing_commands": [
+      {
+        "description": "事件 \"BookingApproved\" 声明由命令 \"cmd-999\" 触发，但该命令未在 Round2 中提取",
+        "severity": "high",
+        "suggested_command_name": "ApproveBooking",
+        "target_aggregate_id": "agg-001",
+        "source_location": []
+      }
+    ],
+    "term_conflicts": [
+      {
+        "term_ids": ["term-003"],
+        "severity": "high",
+        "description": "PRD 第 2 节将 '用户'、'员工'、'成员' 混用，未明确是否指同一概念",
+        "occurrences": [
+          {
+            "term_id": "term-003",
+            "locations": [
+              {
+                "section_title": "2. 目标用户与角色",
+                "paragraph_index": 1,
+                "approximate_line": 12,
+                "quote": "用户：企业内所有需要预订会议室的人员"
+              }
+            ]
+          }
+        ],
+        "suggested_action": "clarify_definition"
+      },
+      {
+        "term_ids": ["term-001", "term-005"],
+        "severity": "medium",
+        "description": "'预订' 与 '日历锁定' 在 PRD 第 4 节界限模糊",
+        "occurrences": [
+          {
+            "term_id": "term-001",
+            "locations": [
+              {
+                "section_title": "4. 预订流程与日历锁定",
+                "paragraph_index": 1,
+                "approximate_line": 35,
+                "quote": "用户选择会议室、日期和时段后提交预订"
+              }
+            ]
+          },
+          {
+            "term_id": "term-005",
+            "locations": [
+              {
+                "section_title": "4. 预订流程与日历锁定",
+                "paragraph_index": 2,
+                "approximate_line": 38,
+                "quote": "将对应时段在日历视图中标记为“已占用”"
+              }
+            ]
+          }
+        ],
+        "suggested_action": "clarify_definition"
+      }
+    ],
+    "boundary_ambiguities": [
+      {
+        "aggregate_ids": ["agg-001", "agg-002"],
+        "severity": "high",
+        "description": "命令 \"CreateBooking\" 归属聚合 \"agg-001\"，但其产生的事件 \"CalendarSlotLocked\" 归属聚合 \"agg-002\"",
+        "overlap_type": "lifecycle",
+        "suggested_action": "重新划分聚合职责，或引入读模型 / 反腐化层 / 异步事件解耦"
+      },
+      {
+        "aggregate_ids": ["agg-001", "agg-002"],
+        "severity": "medium",
+        "description": "聚合 \"Booking\" 与 \"MeetingRoom\" 职责重叠：验证时段冲突",
+        "overlap_type": "responsibility",
+        "suggested_action": "重新划分聚合职责，或引入读模型 / 反腐化层 / 异步事件解耦"
+      }
+    ],
+    "circular_dependencies": [],
+    "hot_spot_reviews": [
+      {
+        "hot_spot_id": "hs-001",
+        "resolution": "confirmed",
+        "reason": "PRD 第 4 节未明确预订成功是否立即锁定日历时段"
+      },
+      {
+        "hot_spot_id": "hs-002",
+        "resolution": "confirmed",
+        "reason": "PRD 第 5 节未定义审批超时后的默认行为"
+      },
+      {
+        "hot_spot_id": "hs-003",
+        "resolution": "confirmed",
+        "reason": "PRD 第 2 节混用 '用户'、'员工'、'成员'"
+      }
+    ]
+  },
+  "metrics": {
+    "event_command_ratio": 5,
+    "aggregate_count": 2,
+    "external_system_count": 2,
+    "policy_density": 0
+  }
+}

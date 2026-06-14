@@ -1,0 +1,317 @@
+{
+  "version": "1.0",
+  "round": 2,
+  "dependencies": {
+    "round1_term_ids": [
+      "term-001",
+      "term-002",
+      "term-003",
+      "term-004",
+      "term-005",
+      "term-006",
+      "term-007"
+    ]
+  },
+  "events": [
+    {
+      "id": "evt-001",
+      "name": "BookingCreated",
+      "past_tense_verb": "Created",
+      "aggregate_id": "agg-001",
+      "trigger": {
+        "type": "command",
+        "source_id": "cmd-001"
+      },
+      "description": "员工成功提交会议室预订",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 2,
+          "approximate_line": 36,
+          "quote": "若空闲，则生成一条预订记录"
+        }
+      ],
+      "term_ids": ["term-001", "term-002"],
+      "business_value": "high"
+    },
+    {
+      "id": "evt-002",
+      "name": "BookingApproved",
+      "past_tense_verb": "Approved",
+      "aggregate_id": "agg-001",
+      "trigger": {
+        "type": "event",
+        "source_id": "evt-001"
+      },
+      "description": "审批人通过预订申请",
+      "source_location": [
+        {
+          "section_title": "5. 审批策略",
+          "paragraph_index": 3,
+          "approximate_line": 56,
+          "quote": "审批人收到企业微信审批提醒后，可在 2 小时内通过或驳回"
+        }
+      ],
+      "term_ids": ["term-004"],
+      "business_value": "high"
+    },
+    {
+      "id": "evt-003",
+      "name": "BookingCancelled",
+      "past_tense_verb": "Cancelled",
+      "aggregate_id": "agg-001",
+      "description": "用户在会议开始前取消预订",
+      "source_location": [
+        {
+          "section_title": "6. 取消、改期与释放规则",
+          "paragraph_index": 1,
+          "approximate_line": 66,
+          "quote": "用户可在会议开始前取消预订"
+        }
+      ],
+      "term_ids": ["term-001"],
+      "business_value": "medium"
+    },
+    {
+      "id": "evt-004",
+      "name": "CalendarSlotLocked",
+      "past_tense_verb": "Locked",
+      "aggregate_id": "agg-002",
+      "trigger": {
+        "type": "command",
+        "source_id": "cmd-001"
+      },
+      "description": "预订成功后日历中对应时段被锁定",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 2,
+          "approximate_line": 38,
+          "quote": "将对应时段在日历视图中标记为“已占用”"
+        }
+      ],
+      "term_ids": ["term-005", "term-002"],
+      "business_value": "medium"
+    },
+    {
+      "id": "evt-005",
+      "name": "ReminderSent",
+      "past_tense_verb": "Sent",
+      "aggregate_id": "agg-001",
+      "trigger": {
+        "type": "time",
+        "source_id": "scheduler-001"
+      },
+      "description": "会议开始前 15 分钟发送提醒",
+      "source_location": [
+        {
+          "section_title": "7. 外部系统集成",
+          "paragraph_index": 1,
+          "approximate_line": 89,
+          "quote": "会议开始前 15 分钟...向发起人和成员发送邮件"
+        }
+      ],
+      "term_ids": ["term-006", "term-007"],
+      "business_value": "low"
+    },
+    {
+      "id": "evt-006",
+      "name": "NotificationSent",
+      "past_tense_verb": "Sent",
+      "aggregate_id": "agg-001",
+      "trigger": {
+        "type": "event",
+        "source_id": "evt-002"
+      },
+      "description": "预订审批通过后触发邮件/企业微信通知",
+      "source_location": [
+        {
+          "section_title": "7. 外部系统集成",
+          "paragraph_index": 1,
+          "approximate_line": 90,
+          "quote": "在预订成功、审批结果变更后发送邮件和企业微信通知"
+        }
+      ],
+      "term_ids": ["term-006", "term-007"],
+      "business_value": "medium"
+    },
+    {
+      "id": "evt-007",
+      "name": "BookingCheckedIn",
+      "past_tense_verb": "CheckedIn",
+      "aggregate_id": "agg-001",
+      "trigger": {
+        "type": "command",
+        "source_id": "cmd-002"
+      },
+      "description": "会议开始前用户在系统中签到",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 4,
+          "approximate_line": 42,
+          "quote": "用户可在会议开始前进行签到，更新预订状态"
+        }
+      ],
+      "term_ids": ["term-001"],
+      "business_value": "low"
+    }
+  ],
+  "commands": [
+    {
+      "id": "cmd-001",
+      "name": "CreateBooking",
+      "intent": "员工提交新预订",
+      "actor": "User",
+      "target_aggregate_id": "agg-001",
+      "description": "选择会议室、日期和时段后创建预订记录",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 1,
+          "approximate_line": 34,
+          "quote": "用户选择会议室、日期和时段后提交预订"
+        }
+      ],
+      "term_ids": ["term-001", "term-002"]
+    },
+    {
+      "id": "cmd-002",
+      "name": "CheckInBooking",
+      "intent": "用户会议签到",
+      "actor": "User",
+      "target_aggregate_id": "agg-001",
+      "description": "会议开始前用户在系统中签到",
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 4,
+          "approximate_line": 42,
+          "quote": "用户可在会议开始前进行签到，更新预订状态"
+        }
+      ],
+      "term_ids": ["term-001"]
+    }
+  ],
+  "aggregates": [
+    {
+      "id": "agg-001",
+      "name": "Booking",
+      "responsibilities": ["维护预订生命周期", "验证时段冲突", "关联会议室资源"],
+      "invariants": ["同一会议室同一时段不能有两个已通过预订", "预订人必须是系统内员工"],
+      "boundary_indicators": ["由预订团队维护", "数据存储在预订库"],
+      "source_location": [
+        {
+          "section_title": "4. 预订流程与日历锁定",
+          "paragraph_index": 1,
+          "approximate_line": 32,
+          "quote": "系统在收到请求后应立即检查会议室是否空闲"
+        }
+      ],
+      "term_ids": ["term-001"]
+    },
+    {
+      "id": "agg-002",
+      "name": "MeetingRoom",
+      "responsibilities": ["维护会议室基础信息", "验证时段冲突", "管理可用时段模板"],
+      "invariants": ["停用会议室不可被预订", "会议室容量必须大于 0"],
+      "boundary_indicators": ["由资源管理团队维护", "数据存储在会议室库"],
+      "source_location": [
+        {
+          "section_title": "3. 会议室资源管理",
+          "paragraph_index": 1,
+          "approximate_line": 23,
+          "quote": "每个会议室包含名称、容量、位置、设备清单"
+        }
+      ],
+      "term_ids": ["term-002"]
+    }
+  ],
+  "policies": [],
+  "read_models": [
+    {
+      "id": "rm-001",
+      "name": "RoomAvailabilityView",
+      "consumer": "会议室可用时段查询页面",
+      "data_source": "CalendarSlot 投影",
+      "events_subscribed": ["evt-001", "evt-003", "evt-004"],
+      "source_location": [
+        {
+          "section_title": "8. 读模型与查询",
+          "paragraph_index": 1,
+          "approximate_line": 100,
+          "quote": "会议室可用时段查询：按日期、会议室、容量筛选"
+        }
+      ]
+    },
+    {
+      "id": "rm-002",
+      "name": "MyBookingListView",
+      "consumer": "我的预订列表页面",
+      "data_source": "Booking 聚合投影",
+      "source_location": [
+        {
+          "section_title": "8. 读模型与查询",
+          "paragraph_index": 2,
+          "approximate_line": 104,
+          "quote": "我的预订列表：展示当前用户作为发起人的所有预订"
+        }
+      ]
+    },
+    {
+      "id": "rm-003",
+      "name": "MemberMeetingView",
+      "consumer": "成员参会视图页面",
+      "data_source": "Booking 聚合投影",
+      "source_location": [
+        {
+          "section_title": "8. 读模型与查询",
+          "paragraph_index": 3,
+          "approximate_line": 107,
+          "quote": "成员参会视图：展示某成员受邀参加的所有会议列表"
+        }
+      ]
+    }
+  ],
+  "external_systems": [
+    {
+      "id": "ext-001",
+      "name": "EmailService",
+      "integration_type": "api",
+      "events_consumed": ["evt-001", "evt-003", "evt-006"],
+      "events_produced": [],
+      "description": "邮件通知服务，发送预订相关邮件"
+    },
+    {
+      "id": "ext-002",
+      "name": "WeCom",
+      "integration_type": "webhook",
+      "events_consumed": ["evt-001", "evt-002"],
+      "events_produced": [],
+      "description": "企业微信，推送审批待办和即时提醒"
+    }
+  ],
+  "hot_spots": [
+    {
+      "id": "hs-001",
+      "category": "ambiguous_requirement",
+      "description": "PRD 第 4 节未明确预订成功与日历锁定是否为同一事务",
+      "related_element_ids": ["cmd-001", "evt-001", "evt-004"],
+      "severity": "high"
+    },
+    {
+      "id": "hs-002",
+      "category": "missing_rule",
+      "description": "PRD 第 5 节未定义审批超时后的默认行为",
+      "related_element_ids": ["evt-002"],
+      "severity": "medium"
+    },
+    {
+      "id": "hs-003",
+      "category": "term_conflict",
+      "description": "PRD 第 2 节混用 '用户'、'员工'、'成员'，角色边界不清",
+      "related_element_ids": ["term-003"],
+      "severity": "high"
+    }
+  ]
+}
